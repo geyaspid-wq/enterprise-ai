@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  # Service 1: The ultra-fast database storage layer
+  redis:
+    image: redis:7-alpine
+    container_name: fleet_redis_db
+    ports:
+      - "6379:6379"
+    restart: always
+
+  # Service 2: Your high-throughput orchestrator middleware engine
+  orchestrator:
+    build: .
+    container_name: fleet_orchestrator_engine
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
